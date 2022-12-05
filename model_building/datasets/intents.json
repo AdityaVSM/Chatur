@@ -1,37 +1,37 @@
 {
     "intents": [
         {
-            "tags": "greet", 
+            "tag": "greet", 
             "patterns": ["Hi", "How are you", "Is anyone there?", "Hello", "Good day", "What`s up"],
             "response_code": 0,
             "responses": ["Hello", "Hey, thanks for visiting, What can I do for you?"]
         },
 
         {
-            "tags": "goodbye",
+            "tag": "goodbye",
             "patterns": ["Bye", "See you later", "Goodbye", "Have a nice day", "See you soon"],
             "response_code": 0,
             "responses": ["See you later, thanks for visiting", "Have a nice day", "Bye! Come back again soon."]
         },
         
         {
-            "tags": "thanks",
+            "tag": "thanks",
             "patterns": ["Thanks", "Thank you", "That`s helpful", "Thanks for the help"],
             "response_code": 0,
             "responses": ["Happy to help!", "Any time!", "My pleasure"]
         },
         
         {
-            "tags": "hours",
+            "tag": "hours",
             "patterns": ["What are your hours?", "What time are you open?", "When are you open?", "What are your hours of operation?"],
             "response_code": 0,
             "responses": ["We are open 9am-5pm Monday-Friday", "Our hours are 9am-5pm Monday-Friday"]
         },
         
         {
-            "tags": "location",
-            "patterns": ["Where are you located?", "What`s your address?", "Do you have a physical location?", "Where can I find you?"],
-            "response_code": 0,
+            "tag": "location",
+            "patterns": ["How can i find?","Where to find?", "Where is office of?", "Where is?", "Where can I find?"],
+            "response_code": 1,
             "responses": ["Location"]
         }   
 
