@@ -26,4 +26,6 @@ for intent in intents['intents']:
         documents.append((word_list, intent['tag'], intent['response_code']))
         if intent['tag'] not in classes:
             classes.append(intent['tag'])
+            
+print(documents)
         
