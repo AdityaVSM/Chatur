@@ -22,13 +22,6 @@
         },
         
         {
-            "tag": "hours",
-            "patterns": ["What are your hours?", "What time are you open?", "When are you open?", "What are your hours of operation?"],
-            "response_code": 0,
-            "responses": ["We are open 9am-5pm Monday-Friday", "Our hours are 9am-5pm Monday-Friday"]
-        },
-        
-        {
             "tag": "location",
             "patterns": ["How can i find?","Where to find?", "Where is office of?", "Where is?", "Where can I find?"],
             "response_code": 1,

@@ -1,0 +1,6 @@
+---
+dataset_path : model_building/datasets/intents.json
+saved_model_path : model_building/saved_models/chatbot_model_v1.h5
+
+
+...
