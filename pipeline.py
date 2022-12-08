@@ -7,7 +7,7 @@ import  pickle
 import nltk
 from nltk.stem import WordNetLemmatizer
 
-from tensorflow.keras.models import load_model
+from keras.models import load_model
 
 def load_models():
     global intents, words, classes, model, lemmatizer

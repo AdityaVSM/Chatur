@@ -6,10 +6,13 @@ import pickle
 import nltk
 from nltk.stem import WordNetLemmatizer
 
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Activation, Dropout
-from tensorflow.keras.optimizers import SGD
+# from tensorflow.keras.models import Sequential
+# from tensorflow.keras.layers import Dense, Activation, Dropout
+# from tensorflow.keras.optimizers import SGD
 
+from keras.models import Sequential
+from keras.layers import Dense, Activation, Dropout
+from keras.optimizers import SGD
 lemmatizer = WordNetLemmatizer()
 
 # nltk.download('punkt') # Uncomment if you don't have the punkt package
