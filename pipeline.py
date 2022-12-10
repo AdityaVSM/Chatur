@@ -10,12 +10,14 @@ from nltk.stem import WordNetLemmatizer
 from keras.models import load_model
 
 from yaml_parser import Parser
+from named_entity.NER import NamedEntityRecognition
 
 class ChatBot:
     def __init__(self):
         p = Parser()
         self.dataset_path = p.dataset_path
         self.saved_model_path = p.saved_model_path
+        self.ner = NamedEntityRecognition()
 
     def __load_models(self):
         self.lemmatizer = WordNetLemmatizer()
@@ -70,4 +72,8 @@ class ChatBot:
                 break
             ints = self.__predict_class(message)
             res = self.__get_response(ints, self.intents)
+            if(res == "Location"):
+                res = self.ner.predict(message)
+                if res=={}:
+                    res = message.split(' ')[-1]
             print(res)
