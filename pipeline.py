@@ -7,7 +7,7 @@ import  pickle
 import nltk
 from nltk.stem import WordNetLemmatizer
 
-from tensorflow.keras.models import load_model
+from keras.models import load_model
 
 from yaml_parser import Parser
 
