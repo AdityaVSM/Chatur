@@ -13,6 +13,13 @@
             "response_code": 0,
             "responses": ["See you later, thanks for visiting", "Have a nice day", "Bye! Come back again soon."]
         },
+
+        {
+            "tag":"about",
+            "patterns":["What is your name?", "What should I call you?", "What are you called?","What can you do?", "What are you?", "What is your purpose?","Why are you here?", "What is your goal?","What can you help me with?"],
+            "response_code": 0,
+            "responses":["Hola!, I am Chatur an intelligent chatbot, I can help you with your queries regarding our college like courses, placements, faculty, etc."]
+        },
         
         {
             "tag": "thanks",
@@ -22,15 +29,8 @@
         },
         
         {
-            "tag": "hours",
-            "patterns": ["What are your hours?", "What time are you open?", "When are you open?", "What are your hours of operation?"],
-            "response_code": 0,
-            "responses": ["We are open 9am-5pm Monday-Friday", "Our hours are 9am-5pm Monday-Friday"]
-        },
-        
-        {
             "tag": "location",
-            "patterns": ["How can i find?","Where to find?", "Where is office of?", "Where is?", "Where can I find?"],
+            "patterns": ["How can i find?","Where to find?", "Where is office of?", "Where is?", "Where can I find?","can you locate?","can you find?","can you tell me the location of?"],
             "response_code": 1,
             "responses": ["Location"]
         }   

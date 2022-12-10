@@ -9,59 +9,65 @@ from nltk.stem import WordNetLemmatizer
 
 from keras.models import load_model
 
-def load_models():
-    global intents, words, classes, model, lemmatizer
-    lemmatizer = WordNetLemmatizer()
-    intents = json.loads(open('model_building/datasets/intents.json').read())
-        
-    words = pickle.load(open('model_building/saved_models/words.pkl', 'rb'))
-    classes = pickle.load(open('model_building/saved_models/classes.pkl', 'rb'))
+from yaml_parser import Parser
 
-    model = load_model('model_building/saved_models/chatbot_model_v1.h5')
-    
-def clean_up_sentence(sentence):
-    sentence_words = nltk.word_tokenize(sentence)
-    sentence_words = [lemmatizer.lemmatize(word.lower()) for word in sentence_words]
-    return sentence_words
+class ChatBot:
+    def __init__(self):
+        p = Parser()
+        self.dataset_path = p.dataset_path
+        self.saved_model_path = p.saved_model_path
 
-def bag_of_words(sentence):
-    sentence_words = clean_up_sentence(sentence)
-    bag = [0] * len(words)
-    for s in sentence_words:
-        for i, word in enumerate(words):
-            if word == s:
-                bag[i] = 1
-    return np.array(bag)
-
-def predict_class(sentence):
-    bow = bag_of_words(sentence)
-    res = model.predict(np.array([bow]))[0]
-    ERROR_THRESHOLD = 0.25
-    results = [[i,r] for i,r in enumerate(res) if r>ERROR_THRESHOLD]
-    
-    results.sort(key=lambda x: x[1], reverse=True)
-    return_list = []
-    for r in results:
-        return_list.append({"intent": classes[r[0]], "probability": str(r[1])})
-    return return_list
-
-def get_response(ints, intents_json):
-    tag = ints[0]['intent']
-    list_of_intents = intents_json['intents']
-    for i in list_of_intents:
-        if(i['tag']== tag):
-            result = random.choice(i['responses'])
-            break
-    return result
-
-if __name__=="__main__":
-    load_models()
-    print("Welcome to the chatbot. Type 'quit' to exit.")
-    while True:
-        message = input("")
-        if message.lower() == "quit":
-            break
+    def __load_models(self):
+        self.lemmatizer = WordNetLemmatizer()
+        self.intents = json.loads(open(self.dataset_path).read())
             
-        ints = predict_class(message)
-        res = get_response(ints, intents)
-        print(res)
+        self.words = pickle.load(open('model_building/saved_models/words.pkl', 'rb'))
+        self.classes = pickle.load(open('model_building/saved_models/classes.pkl', 'rb'))
+
+        self.model = load_model(self.saved_model_path)
+    
+    def __clean_up_sentence(self,sentence):
+        sentence_words = nltk.word_tokenize(sentence)
+        sentence_words = [self.lemmatizer.lemmatize(word.lower()) for word in sentence_words]
+        return sentence_words
+
+    def __bag_of_words(self,sentence):
+        sentence_words = self.__clean_up_sentence(sentence)
+        bag = [0] * len(self.words)
+        for s in sentence_words:
+            for i, word in enumerate(self.words):
+                if word == s:
+                    bag[i] = 1
+        return np.array(bag)
+
+    def __predict_class(self,sentence):
+        bow = self.__bag_of_words(sentence)
+        res = self.model.predict(np.array([bow]))[0]
+        ERROR_THRESHOLD = 0.25
+        results = [[i,r] for i,r in enumerate(res) if r>ERROR_THRESHOLD]
+    
+        results.sort(key=lambda x: x[1], reverse=True)
+        return_list = []
+        for r in results:
+            return_list.append({"intent": self.classes[r[0]], "probability": str(r[1])})
+        return return_list
+
+    def __get_response(self,ints, intents_json):
+        tag = ints[0]['intent']
+        list_of_intents = intents_json['intents']
+        for i in list_of_intents:
+            if(i['tag']== tag):
+                result = random.choice(i['responses'])
+                break
+        return result
+    
+    def start_bot(self):
+        self.__load_models()
+        print("Bot is ready to chat! (type quit to stop)")
+        while True:
+            message = input("")
+            if message.lower() == "quit":
+                break
+            ints = self.__predict_class(message)
+            res = self.__get_response(ints, self.intents)
+            print(res)
