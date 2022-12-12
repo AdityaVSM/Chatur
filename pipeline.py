@@ -63,6 +63,15 @@ class ChatBot:
                 break
         return result
     
+    def __get_response_code(self, ints, intents_json):
+        tag = ints[0]['intent']
+        list_of_intents = intents_json['intents']
+        for i in list_of_intents:
+            if(i['tag'] == tag):
+                response_code = i['response_code']
+                break
+        return response_code
+    
     def start_bot(self):
         self.__load_models()
         print("Bot is ready to chat! (type quit to stop)")
@@ -72,8 +81,9 @@ class ChatBot:
                 break
             ints = self.__predict_class(message)
             res = self.__get_response(ints, self.intents)
-            if(res == "Location"):
+            res_response_code = self.__get_response_code(ints,self.intents)
+            if(res_response_code ==  1):
                 res = self.ner.predict(message)
-                if res=={}:
-                    res = message.split(' ')[-1]
+                # if res=={}:
+                #     res = message.split(' ')[-1]
             print(res)
