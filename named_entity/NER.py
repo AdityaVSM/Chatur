@@ -12,6 +12,8 @@ class NamedEntityRecognition:
         for entity in entities:
             tag = entity.tag
             text = entity.text
+            proba = entity.score
+            print(proba)
             if tag in entity_tags:
                 temp = entity_tags[tag]
                 temp.append(text)
@@ -22,5 +24,5 @@ class NamedEntityRecognition:
 
 if __name__ =='__main__':
      ner = NamedEntityRecognition()
-     s = 'Where is Niranjan?'
+     s = 'where can i find Guruprasad ?'
      print(ner.predict(s))
