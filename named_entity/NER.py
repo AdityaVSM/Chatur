@@ -12,14 +12,13 @@ class NamedEntityRecognition:
         for entity in entities:
             tag = entity.tag
             text = entity.text
-            proba = entity.score
-            print(proba)
+            score = entity.score
             if tag in entity_tags:
                 temp = entity_tags[tag]
-                temp.append(text)
+                temp.append((text,score))
                 entity_tags[tag] = temp
             else:
-                entity_tags[tag] = [text]
+                entity_tags[tag] = [(text,score)]
         return entity_tags
 
 if __name__ =='__main__':
