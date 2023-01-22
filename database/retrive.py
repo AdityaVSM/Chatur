@@ -25,17 +25,16 @@ class Retrive:
                 'query': queryText,
                 'path': {
                 'wildcard': '*'
-                },
-                "fuzzy": {}
+                }
                 }
             }
         }
         ]
         
-        result = self.db[collection].aggregate(query)
+        result = list(self.db[collection].aggregate(query))
         # print(len(list(result)))
-        printer.pprint(list(result))
-        # return result
+        # printer.pprint(list(result))
+        return result
 
 if __name__ =='__main__':
     r = Retrive()

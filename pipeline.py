@@ -11,6 +11,8 @@ from keras.models import load_model
 
 from yaml_parser import Parser
 from named_entity.NER import NamedEntityRecognition
+from database.retrive import Retrive
+from constants import Constants
 
 class ChatBot:
     def __init__(self):
@@ -18,6 +20,9 @@ class ChatBot:
         self.dataset_path = p.dataset_path
         self.saved_model_path = p.saved_model_path
         self.ner = NamedEntityRecognition()
+        self.retriver = Retrive()
+        self.constants = Constants()
+        
 
     def __load_models(self):
         self.lemmatizer = WordNetLemmatizer()
@@ -77,13 +82,35 @@ class ChatBot:
         print("Bot is ready to chat! (type quit to stop)")
         while True:
             message = input("")
+            new_message = ""
+            for words in message.split(" "):
+                new_message+=words[0].upper()+words[1:]+" "
+            message = new_message
             if message.lower() == "quit":
                 break
             ints = self.__predict_class(message)
             res = self.__get_response(ints, self.intents)
             res_response_code = self.__get_response_code(ints,self.intents)
+            got_result = False
             if(res_response_code ==  1):
+                got_result = True
                 res = self.ner.predict(message)
-                # if res=={}:
-                #     res = message.split(' ')[-1]
-            print(res)
+                if len(res) > 0: 
+                    key = list(res.keys())
+                    name = list(res[key[0]])[0][0]
+                    collection = self.constants.get_collection_name(key[0])
+                    details = self.retriver.wildQuery(collection,name)
+                    if(len(details) == 0):
+                        print("Sorry, I couldn't find any details")
+                        print("Can you please be more specific?")
+                    else:
+                        print("Here is/are the "+str(len(details))+" match/matches I found:")
+                        print("Name : "+  details[0]['Name'])
+                        print("Email : "+  details[0]['Email'])
+                        print("Gender : "+ details[0]['Gender'])
+                        print("Designation : "+ details[0]['Designation'])                        
+                else:
+                    print("Can you please be more specific?")
+            if not got_result:
+                print(res)
+            print("\n")
