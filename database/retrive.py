@@ -1,6 +1,9 @@
 import pymongo
 from pymongo import MongoClient
 import os
+from pprint import PrettyPrinter
+
+printer = PrettyPrinter()
 
 class Retrive:
     def __init__(self):
@@ -13,6 +16,30 @@ class Retrive:
         a = collection.find_one({'Designation':"Principal"}) 
         print(a)
 
+    def wildQuery(self,collection,queryText):
+        query = [
+            {
+            '$search': {
+            'index': 'faculty_data',
+            'text': {
+                'query': queryText,
+                'path': {
+                'wildcard': '*'
+                },
+                "fuzzy": {}
+                }
+            }
+        }
+        ]
+        
+        result = self.db[collection].aggregate(query)
+        # print(len(list(result)))
+        printer.pprint(list(result))
+        # return result
+
 if __name__ =='__main__':
     r = Retrive()
-    r.retrive('Person')
+    # r.retrive('Person')
+    r.wildQuery('Person','Shmbhavi')
+
+    

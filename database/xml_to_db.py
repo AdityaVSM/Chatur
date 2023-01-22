@@ -6,7 +6,7 @@ import os
 class Convert:
     def __init__(self):
         self.__dataframe = None
-        self.client = client = pymongo.MongoClient("mongodb+srv://Niranjan:Niranjan15!@cluster0.lxzx5gk.mongodb.net/?retryWrites=true&w=majority")
+        self.client = pymongo.MongoClient("mongodb+srv://Niranjan:Niranjan15!@cluster0.lxzx5gk.mongodb.net/?retryWrites=true&w=majority")
         # self.client = pymongo.MongoClient("localhost",27017)      #for connecting to loacal db
         self.db = self.client.Chatur
         self.collection = None
