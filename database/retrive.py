@@ -25,7 +25,8 @@ class Retrive:
                 'query': queryText,
                 'path': {
                 'wildcard': '*'
-                }
+                },
+                "fuzzy": {}
                 }
             }
         }
