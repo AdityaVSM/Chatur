@@ -82,18 +82,22 @@ class ChatBot:
         print("Bot is ready to chat! (type quit to stop)")
         while True:
             message = input("")
-            new_message = ""
+            new_message = " ".join(message.split())
             for words in message.split(" "):
-                new_message+=words[0].upper()+words[1:]+" "
+                if words:
+                    new_message+=words[0].upper()+words[1:]+" "
             message = new_message
             if message.lower() == "quit":
                 break
             ints = self.__predict_class(message)
             res = self.__get_response(ints, self.intents)
             res_response_code = self.__get_response_code(ints,self.intents)
-            got_result = False
+            
+            if(res_response_code ==  0):
+                print(res+"\n")
+                continue
+            
             if(res_response_code ==  1):
-                got_result = True
                 res = self.ner.predict(message)
                 if len(res) > 0: 
                     key = list(res.keys())
@@ -104,13 +108,16 @@ class ChatBot:
                         print("Sorry, I couldn't find any details")
                         print("Can you please be more specific?")
                     else:
-                        print("Here is/are the "+str(len(details))+" match/matches I found:")
+                        # print("Here is/are the "+str(len(details))+" match/matches I found:")
                         print("Name : "+  details[0]['Name'])
                         print("Email : "+  details[0]['Email'])
                         print("Gender : "+ details[0]['Gender'])
                         print("Designation : "+ details[0]['Designation'])                        
                 else:
                     print("Can you please be more specific?")
-            if not got_result:
-                print(res)
+                continue
+            
+            if(res_response_code ==  2):
+                print(res+"\n")
+                continue
             print("\n")

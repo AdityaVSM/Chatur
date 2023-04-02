@@ -23,5 +23,5 @@ class NamedEntityRecognition:
 
 if __name__ =='__main__':
      ner = NamedEntityRecognition()
-     s = 'Hi Mahesh?'
+     s = 'Give me the details of Dr. Shambhavi'
      print(ner.predict(s))
