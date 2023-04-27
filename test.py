@@ -8,5 +8,5 @@ import nltk
 # else:
 #     ssl._create_default_https_context = _create_unverified_https_context
 
-# # nltk.download()
-nltk.download('punkt')
+nltk.download()
+# nltk.download('omw-1.4')

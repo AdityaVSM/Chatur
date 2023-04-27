@@ -2,38 +2,97 @@
     "intents": [
         {
             "tag": "greet", 
-            "patterns": ["Hi", "How are you", "Is anyone there?", "Hello", "Good day", "What`s up"],
+            "patterns": [
+                "Hi", 
+                "How are you", 
+                "Is anyone there?", 
+                "Hello", 
+                "Good day", 
+                "What`s up"
+            ],
             "response_code": 0,
             "responses": ["Hello", "Hey, thanks for visiting, What can I do for you?"]
         },
 
         {
             "tag": "goodbye",
-            "patterns": ["Bye", "See you later", "Goodbye", "Have a nice day", "See you soon"],
+            "patterns": [
+                "Bye", 
+                "See you later", 
+                "Goodbye", 
+                "Have a nice day", 
+                "See you soon",
+                "See you later"
+            ],
             "response_code": 0,
             "responses": ["See you later, thanks for visiting", "Have a nice day", "Bye! Come back again soon."]
         },
 
         {
             "tag":"about",
-            "patterns":["What is your name?", "What should I call you?", "What are you called?","What can you do?", "What are you?", "What is your purpose?","Why are you here?", "What is your goal?","What can you help me with?"],
+            "patterns":[
+                "What is your name?", 
+                "What should I call you?", 
+                "What are you called?",
+                "What can you do?", 
+                "What are you?", 
+                "What is your purpose?",
+                "Why are you here?", 
+                "What is your goal?",
+                "What can you help me with?"
+            ],
             "response_code": 0,
             "responses":["Hola!, I am Chatur an intelligent chatbot, I can help you with your queries regarding our college like courses, placements, faculty, etc."]
         },
         
         {
             "tag": "thanks",
-            "patterns": ["Thanks", "Thank you", "That`s helpful", "Thanks for the help"],
+            "patterns": [
+                "Thanks", 
+                "Thank you", 
+                "That`s helpful", 
+                "Thanks for the help"
+            ],
             "response_code": 0,
             "responses": ["Happy to help!", "Any time!", "My pleasure"]
         },
         
         {
             "tag": "location",
-            "patterns": ["How can i find?","Where to find?", "Where is office of?", "Where is?", "Where can I find?","can you locate?","can you find?","can you tell me the location of?"],
+            "patterns": [
+                "How can i find?",
+                "Where to find?",
+                "Where is office of?", 
+                "Where is?", 
+                "Where can I find?",
+                "can you locate?",
+                "can you find?",
+                "can you tell me the location of?",
+                "What is the email id of?",
+                "Where can i find?",
+                "What is the department of ?",
+                "To which department does belong?",
+                "Email id of ?",
+                "Department of ?",
+                "designation of?",
+                "Where can i find?"
+            ],
             "response_code": 1,
             "responses": ["Location"]
-        }   
+        },   
+
+        {
+            "tag": "fee",
+            "patterns":[
+                "what is the fees for?",
+                "Fee structure of?",
+                "How much is the fees for course?",
+                "How much is the anual fee of ?",
+                "How much I should pay to get into?"
+            ],
+            "response_code": 2,
+            "responses": ["Fee"]
+        }
 
     ]
 
