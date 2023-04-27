@@ -10,9 +10,12 @@ class Convert:
         # self.client = pymongo.MongoClient("localhost",27017)      #for connecting to loacal db
         self.db = self.client.Chatur
         self.collection = None
+    def check(p= None):
+        return "hi"
     def __read(self,path):
         self.__dataframe = pd.read_excel(path)
-    def __getcollection(self,name):
+        print(self.__dataframe)
+    def getcollection(self,name):
         self.collection = self.db[name]
         # if name in self.db.list_collection_names:
         # else:
@@ -21,12 +24,12 @@ class Convert:
     def insert(self,path,name):
         self.__read(path)
         mp = self.__dataframe.to_dict(orient='records')
-        if self.__getcollection(name) == 1:
+        print(mp)
+        if self.getcollection(name) == 1:
             if self.collection.insert_many(mp):
                 return 1
 
 if __name__ == '__main__':
-    c = Convert()
-    path = os.path.join('database','Person.xlsx')
-    # c.__read('Person.xlsx')
-    c.insert(path,'Person')
+    ch = Convert()
+    path = os.path.join('','Undergraduate_fees (1).xlsx')
+    ch.insert(path,'Departments')

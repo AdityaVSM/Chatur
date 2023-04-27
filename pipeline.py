@@ -22,7 +22,7 @@ class ChatBot:
         self.ner = NamedEntityRecognition()
         self.retriver = Retrive()
         self.constants = Constants()
-        
+        # self.mapper = {'PER'}
 
     def __load_models(self):
         self.lemmatizer = WordNetLemmatizer()
@@ -92,27 +92,37 @@ class ChatBot:
             ints = self.__predict_class(message)
             res = self.__get_response(ints, self.intents)
             res_response_code = self.__get_response_code(ints,self.intents)
-            
+            print(ints)
             if(res_response_code ==  0):
                 print(res+"\n")
                 continue
             
-            if(res_response_code ==  1):
+            if(res_response_code >=  1):
                 res = self.ner.predict(message)
                 if len(res) > 0: 
                     key = list(res.keys())
+
                     name = list(res[key[0]])[0][0]
+                    # name = name.split(' ')
+                    # name = ''.join(name[:])
+                    print(name)
+                    # print('key',key[0])
                     collection = self.constants.get_collection_name(key[0])
-                    details = self.retriver.wildQuery(collection,name)
+                    # print(collection)
+                    idx = self.constants.get_serach_index(collection)
+                    details = self.retriver.wildQuery(collection,name,idx)
                     if(len(details) == 0):
-                        print("Sorry, I couldn't find any details")
-                        print("Can you please be more specific?")
+                        string = "Sorry, I couldn't find any details/nCan you please be more specific?"
+                        print(string)
+                        # print("Can you please be more specific?")
                     else:
-                        # print("Here is/are the "+str(len(details))+" match/matches I found:")
-                        print("Name : "+  details[0]['Name'])
-                        print("Email : "+  details[0]['Email'])
-                        print("Gender : "+ details[0]['Gender'])
-                        print("Designation : "+ details[0]['Designation'])                        
+                        print("Here is/are the "+str(len(details))+" match/matches I found:")
+                        # print("Name : "+  details[0]['Name'])
+                        # print("Email : "+  details[0]['Email'])
+                        # print("Gender : "+ details[0]['Gender'])
+                        # print("Designation : "+ details[0]['Designation'])     
+                        string = self.extract_info(details[0],ints,res_response_code)
+                        print(string)                   
                 else:
                     print("Can you please be more specific?")
                 continue
@@ -121,3 +131,13 @@ class ChatBot:
                 print(res+"\n")
                 continue
             print("\n")
+    def extract_info(self,info,res,respo_code):
+        avoid = ['_id','id']
+        stri = ''
+        if respo_code == 1:
+            stri = "Name : "+  info[0]['Name']+'\n'+"Email : "+  info[0]['Email'] + "\nGender : "+ info[0]['Gender'] + "\nDesignation : "+ info[0]['Designation']
+        elif respo_code ==2:
+            if res[0]['intent'] == 'fee':
+            
+                stri = info['fees'] + ' lakhs only'
+        return stri             
