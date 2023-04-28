@@ -88,6 +88,7 @@ class ChatBot:
                     new_message+=words[0].upper()+words[1:]+" "
             message = new_message
             if message.lower() == "quit":
+                print("Thank for visiting!")
                 break
             ints = self.__predict_class(message)
             res = self.__get_response(ints, self.intents)

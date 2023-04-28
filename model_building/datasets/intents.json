@@ -75,7 +75,10 @@
                 "Email id of ?",
                 "Department of ?",
                 "designation of?",
-                "Where can i find?"
+                "Where can i find?",
+                "can you give me details of ?",
+                "give me details of ?",
+                "details of ?"
             ],
             "response_code": 1,
             "responses": ["Location"]

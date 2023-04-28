@@ -11,7 +11,7 @@ from tensorflow.keras.layers import Dense, Activation, Dropout
 from tensorflow.keras.optimizers import SGD
 
 import os, sys
-sys.path.append('E:/resources/Capstone project/Chatur')
+sys.path.append('C:/personal/imp/Capstone project/Chatur')
 
 from yaml_parser import Parser
 
