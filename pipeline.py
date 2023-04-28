@@ -22,8 +22,13 @@ class ChatBot:
         self.ner = NamedEntityRecognition()
         self.retriver = Retrive()
         self.constants = Constants()
-        
-
+        # self.mapper = {'PER'}
+        self.lemmatizer = WordNetLemmatizer()
+        self.intents = json.loads(open(self.dataset_path).read())
+            
+        self.words = pickle.load(open('model_building/saved_models/words.pkl', 'rb'))
+        self.classes = pickle.load(open('model_building/saved_models/classes.pkl', 'rb'))
+        self.model = load_model(self.saved_model_path)
     def __load_models(self):
         self.lemmatizer = WordNetLemmatizer()
         self.intents = json.loads(open(self.dataset_path).read())
@@ -77,7 +82,7 @@ class ChatBot:
                 break
         return response_code
     
-    def start_bot(self):
+    def start_bot(self,message=None):
         self.__load_models()
         print("Bot is ready to chat! (type quit to stop)")
         while True:
@@ -93,27 +98,37 @@ class ChatBot:
             ints = self.__predict_class(message)
             res = self.__get_response(ints, self.intents)
             res_response_code = self.__get_response_code(ints,self.intents)
-            
+            print(ints)
             if(res_response_code ==  0):
                 print(res+"\n")
                 continue
             
-            if(res_response_code ==  1):
+            if(res_response_code >=  1):
                 res = self.ner.predict(message)
                 if len(res) > 0: 
                     key = list(res.keys())
+
                     name = list(res[key[0]])[0][0]
+                    # name = name.split(' ')
+                    # name = ''.join(name[:])
+                    print(name)
+                    print('key',key[0])
                     collection = self.constants.get_collection_name(key[0])
-                    details = self.retriver.wildQuery(collection,name)
+                    # print(collection)
+                    idx = self.constants.get_serach_index(collection)
+                    details = self.retriver.wildQuery(collection,name,idx)
                     if(len(details) == 0):
-                        print("Sorry, I couldn't find any details")
-                        print("Can you please be more specific?")
+                        string = "Sorry, I couldn't find any details/nCan you please be more specific?"
+                        print(string)
+                        # print("Can you please be more specific?")
                     else:
-                        # print("Here is/are the "+str(len(details))+" match/matches I found:")
-                        print("Name : "+  details[0]['Name'])
-                        print("Email : "+  details[0]['Email'])
-                        print("Gender : "+ details[0]['Gender'])
-                        print("Designation : "+ details[0]['Designation'])                        
+                        print("Here is/are the "+str(len(details))+" match/matches I found:")
+                        # print("Name : "+  details[0]['Name'])
+                        # print("Email : "+  details[0]['Email'])
+                        # print("Gender : "+ details[0]['Gender'])
+                        # print("Designation : "+ details[0]['Designation'])     
+                        string = self.extract_info(details,ints,res_response_code)
+                        print(string)                   
                 else:
                     print("Can you please be more specific?")
                 continue
@@ -122,3 +137,71 @@ class ChatBot:
                 print(res+"\n")
                 continue
             print("\n")
+    def extract_info(self,info,res,respo_code):
+        avoid = ['_id','id']
+        stri = ''
+        if respo_code == 1:
+            for key,value in info[0].items():
+                if key in avoid or value==None:
+                    continue
+                stri += key +':' + str(value)+'\n'
+            # stri = "Name : "+  info[0]['Name']+'\n'+"Email : "+  info[0]['Email'] + "\nGender : "+ info[0]['Gender'] + "\nDesignation : "+ info[0]['Designation']
+        elif respo_code ==2:
+            if res[0]['intent'] == 'fee':
+            
+                stri = str(info[0]['fees']) + ' lakhs only'
+        return stri
+    def return_reponse(self,message):
+        # self.__load_models()
+        string = ''
+        new_message = " ".join(message.split())
+        for words in message.split(" "):
+            if words:
+                new_message+=words[0].upper()+words[1:]+" "
+        message = new_message
+        if message.lower() == "quit":
+            return "quit"
+        ints = self.__predict_class(message)
+        res = self.__get_response(ints, self.intents)
+        res_response_code = self.__get_response_code(ints,self.intents)
+        if(res_response_code ==  0):
+            string = res
+            return res
+            # print(res+"\n")
+            # continue
+        
+        if(res_response_code >=  1):
+            res = self.ner.predict(message)
+            if len(res) > 0: 
+                key = list(res.keys())
+
+                name = list(res[key[0]])[0][0]
+                # name = name.split(' ')
+                # name = ''.join(name[:])
+                # print(name)
+                # print('key',key[0])
+                collection = self.constants.get_collection_name(key[0])
+                # print(collection)
+                idx = self.constants.get_serach_index(collection)
+                details = self.retriver.wildQuery(collection,name,idx)
+                if(len(details) == 0):
+                    string = "Sorry, I couldn't find any details/nCan you please be more specific?"
+                    return string
+                    print(string)
+                    # print("Can you please be more specific?")
+                else:
+                    print("Here is/are the "+str(len(details))+" match/matches I found:")
+                    # print("Name : "+  details[0]['Name'])
+                    # print("Email : "+  details[0]['Email'])
+                    # print("Gender : "+ details[0]['Gender'])
+                    # print("Designation : "+ details[0]['Designation'])     
+                    string = self.extract_info(details,ints,res_response_code)
+                    # print(string)
+                    return string                   
+            else:
+                string = "Can you please be more specific? + 1"
+                return string
+                # print("Can you please be more specific?")
+        return string
+            
+
