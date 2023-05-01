@@ -7,7 +7,7 @@ bot = ChatBot()
 def response():
     input_arg = request.get_json()
     message = input_arg['message']
-    return jsonify(bot.return_reponse(message))
+    return bot.return_reponse(message)
 
 if __name__ == '__main__':
     app.run(debug = True)
