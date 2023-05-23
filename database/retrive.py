@@ -13,7 +13,7 @@ class Retrive:
         
     def retrive(self,collection):
         collection = self.db[collection]
-        a = collection.find_one({'Name':"Principal"}) 
+        a = collection.find_one({'Name':"Hemavathi"}) 
         print(a)
 
     def wildQuery(self,collection,queryText,serachIndex):
@@ -39,7 +39,10 @@ class Retrive:
 
 if __name__ =='__main__':
     r = Retrive()
-    # r.retrive('Person')
-    print(r.wildQuery('Departments','Computer Science & Engineering','departments_data'))
-
+    r.retrive('Person')
+    # res = r.wildQuery('Person','Dr. Hemavathi','faculty_data')
+    # req = res[0]
+    # if req['Department'] == 'Electronics and Communication Engineering':
+    #     print(1)
+    
     

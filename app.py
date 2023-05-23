@@ -1,7 +1,10 @@
 from flask import Flask,redirect,render_template,jsonify
 from flask import request
 from pipeline import ChatBot
+from flask_cors import CORS
+
 app = Flask(__name__)
+CORS(app)
 bot = ChatBot()
 @app.route('/response',methods = ['GET','POST'])
 def response():
