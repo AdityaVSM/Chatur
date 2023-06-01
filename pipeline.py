@@ -151,24 +151,23 @@ class ChatBot:
             
                 stri = str(info[0]['fees']) + ' lakhs only'
         return stri
-    def return_reponse(self,message):
+    
+    def return_reponse(self, requetMessage):
         # self.__load_models()
-        string = ''
-        new_message = " ".join(message.split())
-        for words in message.split(" "):
+        string = ""
+        new_message = " ".join(requetMessage.split())
+        for words in requetMessage.split(" "):
             if words:
-                new_message+=words[0].upper()+words[1:]+" "
+                new_message += words[0].upper() + words[1:] + " "
         message = new_message
         if message.lower() == "quit":
             return "quit"
         ints = self.__predict_class(message)
         res = self.__get_response(ints, self.intents)
-        res_response_code = self.__get_response_code(ints,self.intents)
+        res_response_code = self.__get_response_code(ints, self.intents)
         if(res_response_code ==  0):
             string = res
             return res
-            # print(res+"\n")
-            # continue
         
         if(res_response_code >=  1):
             res = self.ner.predict(message)
@@ -199,6 +198,7 @@ class ChatBot:
                     # print(string)
                     return string                   
             else:
+                app.logger.Info("unhandledQuery : " + )
                 string = "Can you please be more specific? + 1"
                 return string
                 # print("Can you please be more specific?")
