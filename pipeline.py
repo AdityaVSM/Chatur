@@ -6,7 +6,7 @@ import  pickle
 
 import nltk
 from nltk.stem import WordNetLemmatizer
-
+from app_logger import logger
 from keras.models import load_model
 
 from yaml_parser import Parser
@@ -111,7 +111,6 @@ class ChatBot:
                     name = list(res[key[0]])[0][0]
                     # name = name.split(' ')
                     # name = ''.join(name[:])
-                    print(res)
                     print(name)
                     print('key',key[0])
                     collection = self.constants.get_collection_name(key[0])
@@ -128,7 +127,7 @@ class ChatBot:
                         # print("Email : "+  details[0]['Email'])
                         # print("Gender : "+ details[0]['Gender'])
                         # print("Designation : "+ details[0]['Designation'])     
-                        string = self.extract_info(details,ints,res_response_code,ints)
+                        string = self.extract_info(details,ints,res_response_code)
                         print(string)                   
                 else:
                     print("Can you please be more specific?")
@@ -138,10 +137,9 @@ class ChatBot:
                 print(res+"\n")
                 continue
             print("\n")
-    def extract_info(self,info,res,respo_code,ints):
+    def extract_info(self,info,res,respo_code):
         avoid = ['_id','id','ID number/   Aaadhaar number              (Not mandatory)','Gender','Date of joining the institution','Designation']
         stri = ''
-        res = self.__get_response(ints, self.intents)
         if respo_code == 1:
             for key,value in info[0].items():
                 if key == 'url' and value ==None:
@@ -154,17 +152,18 @@ class ChatBot:
             # stri = "Name : "+  info[0]['Name']+'\n'+"Email : "+  info[0]['Email'] + "\nGender : "+ info[0]['Gender'] + "\nDesignation : "+ info[0]['Designation']
         elif respo_code ==2:
             if res[0]['intent'] == 'fee':
-                stri = 'Management fees:'+ str(info[0]['fees']) + ' lakhs only\n For more information visit : '+ res
+            
+                stri = 'Management fees: ' + str(info[0]['fees']) + ' lakhs only'
         return stri
     
     def return_reponse(self, requetMessage):
         # self.__load_models()
         string = ""
-        new_message = " ".join(requetMessage.split())
+        parse_message = " ".join(requetMessage.split())
         for words in requetMessage.split(" "):
             if words:
-                new_message += words[0].upper() + words[1:] + " "
-        message = new_message
+                parse_message += words[0].upper() + words[1:] + " "
+        message = parse_message
         if message.lower() == "quit":
             return "quit"
         ints = self.__predict_class(message)
@@ -203,12 +202,8 @@ class ChatBot:
                     # print(string)
                     return string                   
             else:
-<<<<<<< HEAD
-                app.logger.Info("unhandledQuery : " + )
+                logger.debug("unhandledQuery : ")
                 string = "Can you please be more specific? + 1"
-=======
-                string = "Can you please be more specific?"
->>>>>>> d446011d5ac47ee21c97a2eeaabb92b472108018
                 return string
                 # print("Can you please be more specific?")
         return string
