@@ -5,7 +5,13 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
+<<<<<<< HEAD
+=======
+
+# app = Flask(__name__)
+>>>>>>> 319eab135d5ecdeca2544e3b9b4204c9c3841400
 bot = ChatBot()
+
 @app.route('/response',methods = ['GET','POST'])
 def response():
     input_arg = request.get_json()

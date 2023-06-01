@@ -7,28 +7,21 @@ function SearchBar() {
     const [queryInput, setQueryInput] = useState("hi")
     const [showOutput, setShowOutput] = useState(false)
     const [outputMsg, setOutputMsg] = useState("Hello")
-    const baseURL = "http://127.0.0.1:5000/response"
+    const baseURL = "http://localhost:5000/response"
     
-    useEffect(() => {
-        console.log("queryInput", queryInput);
-    },[queryInput])
     
     const queryChanged = (event) =>{
         setQueryInput(event.target.value)
     }
     
-    function submitClicked(){
-        console.log("curr val", queryInput)
+    async function submitClicked(){
+        console.log("Query : ", queryInput)
         setShowOutput(true)
-        let result = JSON.stringify(fetchOutput())
-        console.log("result from backend", result)
-        setOutputMsg(result)
+        let result = await axios.post(baseURL, { message:queryInput})
+        console.log("Response : ", JSON.stringify(result.data))
+        setOutputMsg(result.data)
     }
 
-    async function fetchOutput(){
-        let results = await axios.get(baseURL, { data: {queryInput} })
-        return results
-    }
 
     return (
         <div>
