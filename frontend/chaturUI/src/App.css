@@ -66,3 +66,73 @@
     border: 1px solid #ccc;  
   }
 }
+.floating-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  background-color: #f44336;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  /* Add any additional styles you need */
+}
+
+.floating-icon img {
+  width: 24px;
+  height: 24px;
+  fill: white; /* Adjust the color as needed */
+}
+
+.chatbot-content {
+  position: fixed;
+  bottom: 20px;
+  right: 70px;
+  width: 20%;
+  height: 50%;
+  transition: transform 0.3s;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  /* height: 100%;
+  padding: 20px; */
+}
+
+.chatbot-icon {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  padding: 10px;
+  background-color: #f2f2f2;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.query-box{
+  position :absolute;
+  overflow-x: auto;
+  bottom: 10px;
+  left: 10px;
+  width: 100%;
+}
+
+
+.query-box input{
+  display: inline-block; 
+  vertical-align: middle;
+  padding: 10px;
+  width: 70%;
+}
+
+.query-box img{
+  display: inline-block; 
+  vertical-align: middle;
+  width: 30px;
+  height: 30px;
+}
