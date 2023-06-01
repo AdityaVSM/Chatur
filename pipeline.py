@@ -111,6 +111,7 @@ class ChatBot:
                     name = list(res[key[0]])[0][0]
                     # name = name.split(' ')
                     # name = ''.join(name[:])
+                    print(res)
                     print(name)
                     print('key',key[0])
                     collection = self.constants.get_collection_name(key[0])
@@ -127,7 +128,7 @@ class ChatBot:
                         # print("Email : "+  details[0]['Email'])
                         # print("Gender : "+ details[0]['Gender'])
                         # print("Designation : "+ details[0]['Designation'])     
-                        string = self.extract_info(details,ints,res_response_code)
+                        string = self.extract_info(details,ints,res_response_code,ints)
                         print(string)                   
                 else:
                     print("Can you please be more specific?")
@@ -137,19 +138,23 @@ class ChatBot:
                 print(res+"\n")
                 continue
             print("\n")
-    def extract_info(self,info,res,respo_code):
-        avoid = ['_id','id']
+    def extract_info(self,info,res,respo_code,ints):
+        avoid = ['_id','id','ID number/   Aaadhaar number              (Not mandatory)','Gender','Date of joining the institution','Designation']
         stri = ''
+        res = self.__get_response(ints, self.intents)
         if respo_code == 1:
             for key,value in info[0].items():
-                if key in avoid or value==None:
+                if key == 'url' and value ==None:
+                    urls = res
+                elif key in avoid or value==None:
                     continue
-                stri += key +':' + str(value)+'\n'
+                else:
+                    stri += key +':' + str(value)+'\n'
+            stri = stri + 'For more info visit : ' + res
             # stri = "Name : "+  info[0]['Name']+'\n'+"Email : "+  info[0]['Email'] + "\nGender : "+ info[0]['Gender'] + "\nDesignation : "+ info[0]['Designation']
         elif respo_code ==2:
             if res[0]['intent'] == 'fee':
-            
-                stri = str(info[0]['fees']) + ' lakhs only'
+                stri = 'Management fees:'+ str(info[0]['fees']) + ' lakhs only\n For more information visit : '+ res
         return stri
     def return_reponse(self,message):
         # self.__load_models()
@@ -195,11 +200,11 @@ class ChatBot:
                     # print("Email : "+  details[0]['Email'])
                     # print("Gender : "+ details[0]['Gender'])
                     # print("Designation : "+ details[0]['Designation'])     
-                    string = self.extract_info(details,ints,res_response_code)
+                    string = self.extract_info(details,ints,res_response_code,ints)
                     # print(string)
                     return string                   
             else:
-                string = "Can you please be more specific? + 1"
+                string = "Can you please be more specific?"
                 return string
                 # print("Can you please be more specific?")
         return string

@@ -81,7 +81,7 @@
                 "details of ?"
             ],
             "response_code": 1,
-            "responses": ["Location"]
+            "responses": ["https://bmsce.ac.in/home/facultyProfile/"]
         },   
 
         {
@@ -94,7 +94,7 @@
                 "How much I should pay to get into?"
             ],
             "response_code": 2,
-            "responses": ["Fee"]
+            "responses": ["https://bmsce.ac.in/home/Under-Graduation"]
         }
 
     ]
