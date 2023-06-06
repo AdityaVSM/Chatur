@@ -39,10 +39,7 @@ class Retrive:
 
 if __name__ =='__main__':
     r = Retrive()
-    r.retrive('Person')
-    # res = r.wildQuery('Person','Dr. Hemavathi','faculty_data')
-    # req = res[0]
-    # if req['Department'] == 'Electronics and Communication Engineering':
-    #     print(1)
-    
+    # r.retrive('Person')
+    r.wildQuery('Person','Shmbhavi')
+
     
