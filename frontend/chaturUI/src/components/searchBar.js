@@ -30,7 +30,7 @@ function SearchBar() {
                 <a href="#about">About</a>
                 <a href="#contact">Contact</a>
                 <div class="search-container">
-                    <form action="/action_page.php">
+                    <form >
                     <input 
                         type="text" 
                         placeholder="Search.." 
