@@ -6,7 +6,7 @@ import  pickle
 
 import nltk
 from nltk.stem import WordNetLemmatizer
-from app_logger import logger
+# from app_logger import logger
 from keras.models import load_model
 
 from yaml_parser import Parser
@@ -140,6 +140,7 @@ class ChatBot:
     def extract_info(self,info,res,respo_code):
         avoid = ['_id','id','ID number/   Aaadhaar number              (Not mandatory)','Gender','Date of joining the institution','Designation']
         stri = ''
+        print("info",info)
         if respo_code == 1:
             for key,value in info[0].items():
                 if key == 'url' and value ==None:
@@ -148,6 +149,7 @@ class ChatBot:
                     continue
                 else:
                     stri += key +':' + str(value)+'\n'
+                print("yoo",res)
             stri = stri + 'For more info visit : ' + res
             # stri = "Name : "+  info[0]['Name']+'\n'+"Email : "+  info[0]['Email'] + "\nGender : "+ info[0]['Gender'] + "\nDesignation : "+ info[0]['Designation']
         elif respo_code ==2:
@@ -202,7 +204,7 @@ class ChatBot:
                     # print(string)
                     return string                   
             else:
-                logger.debug("unhandledQuery : ")
+                # logger.debug("unhandledQuery : ")
                 string = "Can you please be more specific? + 1"
                 return string
                 # print("Can you please be more specific?")
