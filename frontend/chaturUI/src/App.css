@@ -105,9 +105,14 @@
   overflow-y: scroll;
   overflow-x: hidden;
   position: fixed;
-  margin-top: 20px;
-  height: 42%;
+  margin-top: 5px;
+  height: 44%;
   width: 20%;
+}
+
+.question-response-ui::-webkit-scrollbar{
+  width: 0;
+  height: 0;
 }
 
 .chatbot-icon {
@@ -157,7 +162,7 @@
 
 .responses{
   font-size: 15px;
-  width: 50%;
+  width: 60%;
   border: 2px solid #21f3b8;
   background-color: #21f3b8;
   border-radius: 10px;
