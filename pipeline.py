@@ -203,8 +203,9 @@ class ChatBot:
                     return string                   
             else:
                 # logger.debug("unhandledQuery : ")
-                string = "Can you please be more specific? + 1"
-                return string
+                # string = "Can you please be more specific? + 1"
+                # return string
+                pass
                 # print("Can you please be more specific?")
         return string
             
