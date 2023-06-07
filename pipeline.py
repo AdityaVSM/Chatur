@@ -6,7 +6,7 @@ import  pickle
 
 import nltk
 from nltk.stem import WordNetLemmatizer
-from app_logger import logger
+# from app_logger import logger
 from keras.models import load_model
 
 from yaml_parser import Parser
@@ -104,7 +104,7 @@ class ChatBot:
                 continue
             
             if(res_response_code >=  1):
-                res = self.ner.predict(message)
+                res = self.ner.getresponse(message)
                 if len(res) > 0: 
                     key = list(res.keys())
 
@@ -153,7 +153,7 @@ class ChatBot:
         elif respo_code ==2:
             if res[0]['intent'] == 'fee':
             
-                stri = 'Management fees: ' + str(info[0]['fees']) + ' lakhs only'
+                stri = 'Management fees: ' + str(info[0]['fees']) + ' lakhs only' +
         return stri
     
     def return_reponse(self, requetMessage):
@@ -174,7 +174,7 @@ class ChatBot:
             return res
         
         if(res_response_code >=  1):
-            res = self.ner.predict(message)
+            res = self.ner.getresponse(message)
             if len(res) > 0: 
                 key = list(res.keys())
 
@@ -202,9 +202,10 @@ class ChatBot:
                     # print(string)
                     return string                   
             else:
-                logger.debug("unhandledQuery : ")
-                string = "Can you please be more specific? + 1"
-                return string
+                # logger.debug("unhandledQuery : ")
+                # string = "Can you please be more specific? + 1"
+                # return string
+                pass
                 # print("Can you please be more specific?")
         return string
             
