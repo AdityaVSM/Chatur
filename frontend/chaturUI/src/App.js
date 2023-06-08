@@ -1,17 +1,18 @@
 import './App.css';
 import Chatbot from './components/ChatBotContainer';
 import SearchBar from './components/searchBar';
+import Chatbox from './temp/ChatBox';
+import ChatbotIcon from './temp/ChatbotIcon';
+import React, { useState } from 'react';
+
 
 
 function App() {
+
   return (
-    <div>
-      <div>
+    <div className="App">
         <SearchBar/>
-      </div>
-      <div>
-        <Chatbot/>
-      </div>
+        <Chatbox/>
     </div>
   );
 }
