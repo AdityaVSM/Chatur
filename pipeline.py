@@ -225,7 +225,7 @@ class ChatBot:
                 details = self.retriver.wildQuery(collection, name, idx)
                 if(len(details) == 0):
                     responseString = "Sorry, I couldn't find any details :( \nCan you please be more specific?"
-                    response = json.dumps({"response_message": responseString}, indent=4)
+                    response = json.dumps({"code": 0, "response_message": responseString}, indent=4)
                     return response
                 else:
                     print("Here is/are the "+str(len(details))+" match/matches I found:")  
