@@ -8,10 +8,26 @@
                 "Is anyone there?", 
                 "Hello", 
                 "Good day", 
-                "What`s up"
+                "What's up",  
+                "Hello, how are you?",
+                "Good morning, good afternoon, good evening.",
+                "Howdy, neighbor!",
+                "Salutations!",
+                "Greetings, my friend.",
+                "Namaste",
+                "Namaskara"
             ],
             "response_code": 0,
-            "responses": ["Hello", "Hey, thanks for visiting, What can I do for you?"]
+            "responses": ["Hello", "Hey, thanks for visiting, What can I do for you?",
+                "Good morning to you too.",
+                "Namaste, how are you doing today?",
+                "Salutations, my friend. How can I help you today?",
+                "Greetings, greetings. What brings you to my neck of the woods?",
+                "Hey there, friend. What can I do for you today?",
+                "Namaskara, Namaskara, Namaskara!",
+                "Namaste",
+                "Namaskaara"
+            ]
         },
 
         {
@@ -50,7 +66,7 @@
             "patterns": [
                 "Thanks", 
                 "Thank you", 
-                "That`s helpful", 
+                "That's helpful", 
                 "Thanks for the help"
             ],
             "response_code": 0,
@@ -83,7 +99,6 @@
             "response_code": 1,
             "responses": ["https://bmsce.ac.in/"]
         },   
-
         {
             "tag": "fee",
             "patterns":[
@@ -95,6 +110,34 @@
             ],
             "response_code": 2,
             "responses": ["https://bmsce.ac.in/home/Under-Graduation"]
+        },
+        {
+            "tag": "weather",
+            "patterns":[
+                "What is the weather like today?",
+                "What is the weather forecast for tomorrow?",
+                "What is the weather forecast for the next week?",
+                "What is the weather like in ?",
+                "What is the weather like in ?",
+                "What is the temperature in ?",
+                "What is the humidity in ?",
+                "What is the wind speed in ?",
+                "What is the chance of rain in ?",
+                "What is the chance of snow in ?"
+            ],
+            "response_code": 0,
+            "responses": ["I don't have weather data, I don't like calling external API for all these. However, I am sure irrespective of weather you are going to have a fantastic day"]
+        },
+        {
+            "tag": "time",
+            "patterns":[
+                "What is the time now?",
+                "What time is it?",
+                "How much time now?",
+                "What time?"
+            ],
+            "response_code": 3,
+            "responses": ["https://www.google.com/search?q=what+is+the+time+now"]
         }
 
     ]
