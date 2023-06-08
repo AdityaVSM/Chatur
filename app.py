@@ -9,7 +9,7 @@ CORS(app)
 # app = Flask(__name__)
 bot = ChatBot()
 
-@app.route('/response',methods = ['GET','POST'])
+@app.route('/response',methods = ['POST'])
 def response():
     input_arg = request.get_json()
     message = input_arg['message']
