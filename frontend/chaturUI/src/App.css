@@ -132,7 +132,7 @@
   bottom: 25px;
   overflow-x: auto;
   width: 20%;
-  /* bottom: 10px;*/
+  bottom: 10px;
 }
 
 
@@ -141,6 +141,8 @@
   vertical-align: middle;
   padding: 10px;
   width: 80%;
+  margin-bottom: 10px;
+
 }
 
 .query-box img{
