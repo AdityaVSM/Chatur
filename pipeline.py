@@ -1,4 +1,4 @@
-import random
+import random, datetime
 import nltk
 import numpy as np
 import json
@@ -87,7 +87,8 @@ class ChatBot:
         print("Bot is ready to chat! (type quit to stop)")
         while True:
             message = input("")
-            new_message = " ".join(message.split())
+            # new_message = " ".join(message.split())
+            new_message = ""
             for words in message.split(" "):
                 if words:
                     new_message += words[0].upper() + words[1:] + " "
@@ -95,17 +96,20 @@ class ChatBot:
             if message.lower() == "quit":
                 print("Thank for visiting!")
                 break
+            print("Input to Intent Recognition Module : " + message + "\n")
             ints = self.__predict_class(message)
             res = self.__get_response(ints, self.intents)
             res_response_code = self.__get_response_code(ints,self.intents)
-            print(ints)
+            print("Output from Intent Recognition Module : " + str(ints))
             if(res_response_code ==  0):
                 response = json.dumps({"response_message": res}, indent=4)
                 print(response)
                 continue
             
             if(res_response_code >=  1):
+                print("Input to NER Module : " + message + "\n")
                 res = self.ner.getresponse(message)
+                print("Output from NER Module : " + str(res) + "\n")
                 if len(res) > 0: 
                     key = list(res.keys())
                     res_temp = list(res[key[0]])
@@ -116,8 +120,9 @@ class ChatBot:
                     collection = self.constants.get_collection_name(key[0])
                     idx = self.constants.get_serach_index(collection)
                     details = self.retriver.wildQuery(collection, name, idx)
+                    print("Output from MongoDB Knowledge Base : " + str(details) + "\n")
                     if(len(details) == 0):
-                        responseString = "Sorry, I couldn't find any details/nCan you please be more specific?"
+                        responseString = "Sorry, I couldn't find any details :( \nCan you please be more specific?"
                         response = json.dumps({"response_message": responseString}, indent=4)
                         print(response)
 
@@ -205,6 +210,10 @@ class ChatBot:
             return response
         
         if(res_response_code >=  1):
+            
+            if res_response_code == 3:
+                return(json.dumps({"code":0, "response_message": "Current time : " + str(datetime.now())}, indent=4))
+
             res = self.ner.getresponse(message)
             if len(res) > 0: 
                 key = list(res.keys())
@@ -216,7 +225,7 @@ class ChatBot:
                 idx = self.constants.get_serach_index(collection)
                 details = self.retriver.wildQuery(collection, name, idx)
                 if(len(details) == 0):
-                    responseString = "Sorry, I couldn't find any details :( /nCan you please be more specific?"
+                    responseString = "Sorry, I couldn't find any details :( \nCan you please be more specific?"
                     response = json.dumps({"response_message": responseString}, indent=4)
                     return response
                 else:

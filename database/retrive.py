@@ -32,6 +32,8 @@ class Retrive:
             }
         }
         ]
+
+        print("Query formed to MongoDB Knowledge Base : " + str(query))
         
         result = list(self.db[collection].aggregate(query))
         # print(len(list(result)))
