@@ -4,7 +4,7 @@ from pipeline import ChatBot
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
+# CORS(app)
 
 # app = Flask(__name__)
 bot = ChatBot()

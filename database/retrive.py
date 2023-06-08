@@ -7,8 +7,9 @@ printer = PrettyPrinter()
 
 class Retrive:
     def __init__(self):
-        self.client = pymongo.MongoClient("mongodb+srv://Niranjan:Niranjan15!@cluster0.lxzx5gk.mongodb.net/?retryWrites=true&w=majority")
-        # self.client = pymongo.MongoClient("localhost",27017)      #for connecting to loacal db
+        self.client = pymongo.MongoClient("mongodb+srv://Niranjan:Niranjan15!@cluster0.lxzx5gk.mongodb.net/?retryWrites=true&w=majority",connectTimeoutMS=30000, socketTimeoutMS=None, connect=False, maxPoolsize=1)
+         #for connecting to loacal db
+        # self.client = pymongo.MongoClient("localhost",27017)     
         self.db = self.client.Chatur
         
     def retrive(self,collection):
@@ -20,7 +21,7 @@ class Retrive:
         query = [
             {
             '$search': {
-            'index': serachIndex,  #'faculty_data'
+            'index': serachIndex, 
             'text': {
                 'query': queryText,
                 'path': {
