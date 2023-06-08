@@ -31,6 +31,7 @@ class Faculty:
     def to_json(self):
         """Returns a JSON representation of the Faculty object."""
         return json.dumps({
+            "code": 1,
             "name": self.name,
             "email": self.email,
             "gender": self.gender,
@@ -62,6 +63,7 @@ class Department:
 
     def to_json(self):
         return json.dumps({
+            "code": 2,
             "name": self.branchName,
             "location": self.location,
             "url": self.deptUrl

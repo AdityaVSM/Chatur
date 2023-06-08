@@ -8,7 +8,8 @@ const Chatbot = () => {
     const [response, setResponse] = useState("Welcome to Chatur")
     const [queryInput, setQueryInput] = useState("")
     const [queryResponseJson, setQueryResponseJson] = useState([])
-    const baseURL = process.env.REACT_APP_BACKEND_URL
+    // const baseURL = process.env.REACT_APP_BACKEND_URL
+    const baseURL = "http://127.0.0.1:5000"
 
     const toggleChatbot = () => {
         setIsOpen(!isOpen);
@@ -22,9 +23,14 @@ const Chatbot = () => {
         if(queryInput){
             console.log("Query : ", queryInput)
             let result = await axios.post(baseURL + "/response", { message:queryInput})
-            console.log("Response : ", JSON.stringify(result.data))
-            updateQueryResponseJson({"Query":queryInput, "Response":result})
-            setResponse(result.data)
+            console.log("Response : ", result)
+            let final_result = result
+            switch (result.data.code) {
+                case 0 : final_result = result.data.response_message;
+                case 1 : 
+            }
+            updateQueryResponseJson({"Query":queryInput, "Response":final_result})
+            setResponse(final_result)
         }
     }
 
@@ -72,10 +78,10 @@ const Chatbot = () => {
             )
             uiResposeArrStore.push(
                 <div className='responses'>
-                    {element.Response.data}
+                    {element.Response}
                 </div>
                 )
-            console.log("data onlyy", element.Response.data)
+            console.log("data onlyy", element)
         });
         let uiLength = uiQuestionArrStore.length
         for(let i=0;i<uiLength; i++){

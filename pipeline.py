@@ -178,8 +178,8 @@ class ChatBot:
         
         location = info[0]
         if response_code == 2:
-            responseString = 'Management fees : '+ str(location['fees']) + ' lakhs only\n For more information visit : '+ constants.fees_url
-            response = json.dumps({"response_message": responseString}, indent=4)
+            responseString = 'Management fees : '+ str(location['fees']) + ' lakhs only. \nFor more information vist'
+            response = json.dumps({"code":response_code,"fee": responseString, "url":constants.fees_url}, indent=4)
             return response
 
         if 'URL' not in location.keys() or location['URL'] == "Nan":
@@ -196,13 +196,12 @@ class ChatBot:
                 parse_message += words[0].upper() + words[1:] + " "
         message = parse_message
         if message.lower() == "quit":
-            return json.dumps({"response_message": "Thanks for Visiting"}, indent=4)
+            return json.dumps({"code":0, "response_message": "Thanks for Visiting"}, indent=4)
         ints = self.__predict_class(message)
         res = self.__get_response(ints, self.intents)
         res_response_code = self.__get_response_code(ints, self.intents)
         if(res_response_code ==  0):
-            response = json.dumps({"response_message": res}, indent=4)
-            return response
+            return json.dumps({"code":0, "response_message": res}, indent=4)
         
         if(res_response_code >=  1):
             res = self.ner.getresponse(message)
@@ -217,7 +216,7 @@ class ChatBot:
                 details = self.retriver.wildQuery(collection, name, idx)
                 if(len(details) == 0):
                     responseString = "Sorry, I couldn't find any details :( /nCan you please be more specific?"
-                    response = json.dumps({"response_message": responseString}, indent=4)
+                    response = json.dumps({"code":0, "response_message": responseString}, indent=4)
                     return response
                 else:
                     print("Here is/are the "+str(len(details))+" match/matches I found:")  
@@ -231,10 +230,10 @@ class ChatBot:
 
                     return response                   
             else:
-                response = json.dumps({"response_message": "Can you please be more specific?"}, indent=4)
+                response = json.dumps({"code":0, "response_message": "Can you please be more specific?"}, indent=4)
                 return response
         
                 # print("Can you please be more specific?")
-        return json.dumps({"response_message": "I am a bot trained on constrained dataset, if you want answers - feed me with data!!!"}, indent=4)
+        return json.dumps({"code":0, "response_message": "I am a bot trained on constrained dataset, if you want answers - feed me with data!!!"}, indent=4)
             
 
