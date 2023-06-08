@@ -3,16 +3,16 @@ import nltk
 import numpy as np
 import json
 import  pickle
+import constants
 
 import nltk
 from nltk.stem import WordNetLemmatizer
-# from app_logger import logger
 from keras.models import load_model
 
 from yaml_parser import Parser
 from named_entity.NER import NamedEntityRecognition
 from database.retrive import Retrive
-from constants import Constants
+from constants import Constants, common_url, Faculty
 
 class ChatBot:
     def __init__(self):
@@ -82,7 +82,7 @@ class ChatBot:
                 break
         return response_code
     
-    def start_bot(self,message=None):
+    def start_bot(self, message = None):
         self.__load_models()
         print("Bot is ready to chat! (type quit to stop)")
         while True:
@@ -90,7 +90,7 @@ class ChatBot:
             new_message = " ".join(message.split())
             for words in message.split(" "):
                 if words:
-                    new_message+=words[0].upper()+words[1:]+" "
+                    new_message += words[0].upper() + words[1:] + " "
             message = new_message
             if message.lower() == "quit":
                 print("Thank for visiting!")
@@ -100,43 +100,50 @@ class ChatBot:
             res_response_code = self.__get_response_code(ints,self.intents)
             print(ints)
             if(res_response_code ==  0):
-                print(res+"\n")
+                response = json.dumps({"response_message": res}, indent=4)
+                print(response)
                 continue
             
             if(res_response_code >=  1):
                 res = self.ner.getresponse(message)
                 if len(res) > 0: 
                     key = list(res.keys())
-
-                    name = list(res[key[0]])[0][0]
-                    # name = name.split(' ')
-                    # name = ''.join(name[:])
-                    print(name)
-                    print('key',key[0])
+                    res_temp = list(res[key[0]])
+                    name = res_temp[0][0]
+                    if len(res_temp) > 0 and (name.find("Where") >= 0 or name.find("Who") >= 0) :
+                        name = res_temp[1][0]
+                        print(name)
                     collection = self.constants.get_collection_name(key[0])
-                    # print(collection)
                     idx = self.constants.get_serach_index(collection)
-                    details = self.retriver.wildQuery(collection,name,idx)
+                    details = self.retriver.wildQuery(collection, name, idx)
                     if(len(details) == 0):
-                        string = "Sorry, I couldn't find any details/nCan you please be more specific?"
-                        print(string)
-                        # print("Can you please be more specific?")
+                        responseString = "Sorry, I couldn't find any details/nCan you please be more specific?"
+                        response = json.dumps({"response_message": responseString}, indent=4)
+                        print(response)
+
                     else:
                         print("Here is/are the "+str(len(details))+" match/matches I found:")
-                        # print("Name : "+  details[0]['Name'])
-                        # print("Email : "+  details[0]['Email'])
-                        # print("Gender : "+ details[0]['Gender'])
-                        # print("Designation : "+ details[0]['Designation'])     
-                        string = self.extract_info(details,ints,res_response_code,ints)
-                        print(string)                   
+
+                        if collection == 'Person':
+                            response = self.extract_faculty(details)
+                        elif collection == 'Departments':
+                            response = self.extract_location(details, res_response_code)
+                        else : 
+                            response = self.extract_info(details,ints,res_response_code,ints)
+                        
+                        print(response)
                 else:
-                    print("Can you please be more specific?")
+                    response = json.dumps({"response_message": "Can you please be more specific?"}, indent=4)
+                    print(response)
+
                 continue
             
             if(res_response_code ==  2):
                 print(res+"\n")
                 continue
             print("\n")
+
+    
     def extract_info(self,info,res,respo_code,ints):
         avoid = ['_id','id','ID number/   Aaadhaar number              (Not mandatory)','Gender','Date of joining the institution','Designation']
         stri = ''
@@ -151,27 +158,51 @@ class ChatBot:
                     stri += key +':' + str(value)+'\n'
             stri = stri + 'For more info visit : ' + reqUrl
             # stri = "Name : "+  info[0]['Name']+'\n'+"Email : "+  info[0]['Email'] + "\nGender : "+ info[0]['Gender'] + "\nDesignation : "+ info[0]['Designation']
-        elif respo_code ==2:
+        elif respo_code == 2:
             if res[0]['intent'] == 'fee':
                 stri = 'Management fees:'+ str(info[0]['fees']) + ' lakhs only\n For more information visit : '+ reqUrl
         return stri
     
+    def extract_faculty(self, info):
+
+        faculty = info[0]
+        if 'URL' not in faculty.keys() or faculty['URL'] == "Nan":
+            faculty['URL'] = common_url
+
+        facultyResponse = Faculty(faculty['Name'], faculty['Email'], faculty['Gender'],
+                                    faculty['Designation'], faculty['Department'],
+                                    faculty['URL'])
+        return facultyResponse.to_json()
+    
+    def extract_location(self, info, response_code):
+        
+        location = info[0]
+        if response_code == 2:
+            responseString = 'Management fees : '+ str(location['fees']) + ' lakhs only\n For more information visit : '+ constants.fees_url
+            response = json.dumps({"response_message": responseString}, indent=4)
+            return response
+
+        if 'URL' not in location.keys() or location['URL'] == "Nan":
+            location['URL'] = common_url
+        locationResponse = constants.Department(location['branch'], 
+                                                location['location'], location['URL'])
+        
+        return locationResponse.to_json()
+    
     def return_reponse(self, requetMessage):
-        # self.__load_models()
-        string = ""
         parse_message = " ".join(requetMessage.split())
         for words in requetMessage.split(" "):
             if words:
                 parse_message += words[0].upper() + words[1:] + " "
         message = parse_message
         if message.lower() == "quit":
-            return "quit"
+            return json.dumps({"response_message": "Thanks for Visiting"}, indent=4)
         ints = self.__predict_class(message)
         res = self.__get_response(ints, self.intents)
         res_response_code = self.__get_response_code(ints, self.intents)
         if(res_response_code ==  0):
-            string = res
-            return res
+            response = json.dumps({"response_message": res}, indent=4)
+            return response
         
         if(res_response_code >=  1):
             res = self.ner.getresponse(message)
@@ -179,34 +210,31 @@ class ChatBot:
                 key = list(res.keys())
 
                 name = list(res[key[0]])[0][0]
-                # name = name.split(' ')
-                # name = ''.join(name[:])
-                # print(name)
-                # print('key',key[0])
+                if name.find("Where") >= 0 or name.find("Who") >= 0:
+                    name = list(res[key[0]])[1][0]
                 collection = self.constants.get_collection_name(key[0])
-                # print(collection)
                 idx = self.constants.get_serach_index(collection)
-                details = self.retriver.wildQuery(collection,name,idx)
+                details = self.retriver.wildQuery(collection, name, idx)
                 if(len(details) == 0):
-                    string = "Sorry, I couldn't find any details/nCan you please be more specific?"
-                    return string
-                    print(string)
-                    # print("Can you please be more specific?")
+                    responseString = "Sorry, I couldn't find any details :( /nCan you please be more specific?"
+                    response = json.dumps({"response_message": responseString}, indent=4)
+                    return response
                 else:
-                    print("Here is/are the "+str(len(details))+" match/matches I found:")
-                    # print("Name : "+  details[0]['Name'])
-                    # print("Email : "+  details[0]['Email'])
-                    # print("Gender : "+ details[0]['Gender'])
-                    # print("Designation : "+ details[0]['Designation'])     
-                    string = self.extract_info(details,ints,res_response_code,ints)
-                    # print(string)
-                    return string                   
+                    print("Here is/are the "+str(len(details))+" match/matches I found:")  
+
+                    if collection == 'Person':
+                        response = self.extract_faculty(details)
+                    elif collection == 'Departments':
+                        response = self.extract_location(details, res_response_code)
+                    else : 
+                        response = self.extract_info(details,ints,res_response_code,ints)
+
+                    return response                   
             else:
-                # logger.debug("unhandledQuery : ")
-                # string = "Can you please be more specific? + 1"
-                # return string
-                pass
+                response = json.dumps({"response_message": "Can you please be more specific?"}, indent=4)
+                return response
+        
                 # print("Can you please be more specific?")
-        return string
+        return json.dumps({"response_message": "I am a bot trained on constrained dataset, if you want answers - feed me with data!!!"}, indent=4)
             
 
