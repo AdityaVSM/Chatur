@@ -8,7 +8,7 @@ const Chatbot = () => {
     const [response, setResponse] = useState("Welcome to Chatur")
     const [queryInput, setQueryInput] = useState("")
     const [queryResponseJson, setQueryResponseJson] = useState([])
-    const baseURL = "http://localhost:5000/response"
+    const baseURL = process.env.REACT_APP_BACKEND_URL
 
     const toggleChatbot = () => {
         setIsOpen(!isOpen);
@@ -21,7 +21,7 @@ const Chatbot = () => {
     async function generateResponse (){
         if(queryInput){
             console.log("Query : ", queryInput)
-            let result = await axios.post(baseURL, { message:queryInput})
+            let result = await axios.post(baseURL + "/response", { message:queryInput})
             console.log("Response : ", JSON.stringify(result.data))
             updateQueryResponseJson({"Query":queryInput, "Response":result})
             setResponse(result.data)
