@@ -25,6 +25,7 @@ const Chatbox = () => {
             case 0 : return result.data.response_message;
             case 1 : return "\nName: "+result.data.name + "         \nEmail:"+ result.data.email + (result.data.url ? ("   url: "+result.data.url) : " ");
             case 2 : return result.data.fee + (result.data.url ? (" url: "+result.data.url) : " ");
+            case 3 : return result.data.name + "Location: " + result.data.location + (result.data.url ? (" url: "+result.data.url) : " ");
             default : return "Not able to process this query for now";
         }
     }

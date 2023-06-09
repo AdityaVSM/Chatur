@@ -63,7 +63,7 @@ class Department:
 
     def to_json(self):
         return json.dumps({
-            "code": 2,
+            "code": 3,
             "name": self.branchName,
             "location": self.location,
             "url": self.deptUrl
