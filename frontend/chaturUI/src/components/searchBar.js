@@ -26,9 +26,7 @@ function SearchBar() {
     return (
         <div>
             <div class="topnav">
-                <a class="active" href="#home">Home</a>
-                <a href="#about">About</a>
-                <a href="#contact">Contact</a>
+                <center><a href="#Chatur">Chatur</a></center>
                 <div class="search-container">
                     <form >
                     <input 
@@ -38,8 +36,7 @@ function SearchBar() {
                         onChange={(e) => {queryChanged(e);}}
                     />
                     <button 
-                        type="button"
-                        onClick={submitClicked}>
+                        type="button">
                         Submit
                     </button>
                     </form>
