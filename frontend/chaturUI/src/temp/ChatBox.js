@@ -9,8 +9,8 @@ const Chatbox = () => {
     const [response, setResponse] = useState("Welcome to Chatur")
     const [queryInput, setQueryInput] = useState("")
     const [queryResponseJson, setQueryResponseJson] = useState([])
-    // const baseURL = process.env.REACT_APP_BACKEND_URL
-    const baseURL = "http://127.0.0.1:5000"
+    const baseURL = process.env.REACT_APP_BACKEND_URL
+    // const baseURL = "http://127.0.0.1:5000"
 
     const toggleChatbot = () => {
         setIsOpen(!isOpen);

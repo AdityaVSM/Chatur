@@ -112,32 +112,31 @@
             "responses": ["https://bmsce.ac.in/home/Under-Graduation"]
         },
         {
-            "tag": "weather",
+            "tag": "principal",
             "patterns":[
-                "What is the weather like today?",
-                "What is the weather forecast for tomorrow?",
-                "What is the weather forecast for the next week?",
-                "What is the weather like in ?",
-                "What is the weather like in ?",
-                "What is the temperature in ?",
-                "What is the humidity in ?",
-                "What is the wind speed in ?",
-                "What is the chance of rain in ?",
-                "What is the chance of snow in ?"
+                "Who is principal of bmsce?",
+                "Where is principal?",
+                "Details of principal",
+                "What is the name of principal?",
+                "name of principal?"
+        
             ],
             "response_code": 0,
-            "responses": ["I don't have weather data, I don't like calling external API for all these. However, I am sure irrespective of weather you are going to have a fantastic day"]
+            "responses": ["Dr. S Muralidhara"]
         },
         {
-            "tag": "time",
+            "tag": "bmsce",
             "patterns":[
-                "What is the time now?",
-                "What time is it?",
-                "How much time now?",
-                "What time?"
+                "What does bmsce stands for?",
+                "What is the full form of bmsce?",
+                "Full form of BMSCE",
+                "When was BMSCE established?",
+                "When did BMSCE start?",
+                "In which year bmsce was established"
+        
             ],
-            "response_code": 3,
-            "responses": ["https://www.google.com/search?q=what+is+the+time+now"]
+            "response_code": 0,
+            "responses": ["B.M.S. College of Engineering or Bhusanayana Mukundadas Sreenivasaiah College of Engineering is a private engineering college in Basavanagudi, Bangalore, India. It was started in 1946 by Bhusanayana Mukundadas Sreenivasaiah and is run by the B.M.S. Educational Trust"]
         }
 
     ]
